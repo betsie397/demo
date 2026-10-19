@@ -1,0 +1,67 @@
+
+<html>
+    <head>
+        <title>Website</title>
+        <link href="/styles.css" type="text/css" rel="stylesheet">
+        <script src="/form.js"></script>
+        <script src="/table.js"></script>
+        <script src="/instruments.js"></script>
+    </head>
+
+    <body>
+        <div class="title">
+            <h1>Music Tracker !!!!!!!!!!</h1>
+        </div>
+
+        <div class="navbar">
+            <a href="/index.html">Home</a>
+            <a href="/second.html">Second Page</a>
+        </div>
+
+        <button type="button" onclick="showForm()">Click to add a new practice session</button> 
+        <div id="form">
+            <form action="/index.html" method="POST">
+                <br>
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" max = "{{today}}" required>
+                <br>
+                <br>
+                <label for="duration">Duration:</label>
+                <input type="time" id="duration" name="duration" min="0" max="24" step="60" required>
+                <br>
+                <br>
+                <label for="instrument">Instrument:</label>
+                <select id="instrument" name="instrument" onchange="if(this.value === 'add') addInstruments();" required>
+                    <option value="" disabled selected>Select an instrument</option>
+                    <option value="add">Add Instrument</option>
+                </select>
+                <script>showInstruments({{ options | tojson }})</script>
+                <br>
+                <br>
+                <label for="scales">Scales</label>
+                <input type="checkbox" id="scales" name="scales">
+                <br>
+                <label for="exercises">Exercises/Studies</label>
+                <input type="checkbox" id="exercises" name="exercises">
+                <br>
+                <label for="pieces">Pieces</label>
+                <input type="checkbox" id="pieces" name="pieces">
+                <br>
+                <br>
+                <label for="description">Description</label>
+                <input type="longtext" id="description" name="description">
+                <br>
+                <br>
+                <input type="submit" value="Submit">
+                <input type="Reset" value="Reset">
+                <button onclick="hideForm()">Close</button>
+            </form>
+        </div>
+
+        <div class="practice_log">
+            <table id="table"></table>
+            <script>showTable( {{ data | tojson }} );</script>
+                     
+        </div>
+    </body>
+</html>
