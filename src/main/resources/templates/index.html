@@ -1,11 +1,11 @@
 
 <html>
-    <head>
-        <title>Website</title>
-        <link href="/styles.css" type="text/css" rel="stylesheet">
-        <script src="/form.js"></script>
-        <script src="/table.js"></script>
-        <script src="/instruments.js"></script>
+    <head xmlns:th="http://www.thymeleaf.org">
+        <title>Practice Tracker</title>
+        <link th:href="@{/styles.css}" type="text/css" rel="stylesheet">
+        <script th:src="@{/form.js}"></script>
+        <script th:src="@{/table.js}"></script>
+        <script th:src="@{/instruments.js}"></script>
     </head>
 
     <body>
@@ -14,16 +14,16 @@
         </div>
 
         <div class="navbar">
-            <a href="/index.html">Home</a>
-            <a href="/second.html">Second Page</a>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/second.html}">Second Page</a>
         </div>
 
         <button type="button" onclick="showForm()">Click to add a new practice session</button> 
         <div id="form">
-            <form action="/index.html" method="POST">
+            <form th:action="@{/}" method="POST">
                 <br>
                 <label for="date">Date:</label>
-                <input type="date" id="date" name="date" max = "{{today}}" required>
+                <input type="date" id="date" name="date" th:attr="max=${today}" required>
                 <br>
                 <br>
                 <label for="duration">Duration:</label>
@@ -35,7 +35,7 @@
                     <option value="" disabled selected>Select an instrument</option>
                     <option value="add">Add Instrument</option>
                 </select>
-                <script>showInstruments({{ options | tojson }})</script>
+                <script th:inline="javascript">showInstruments("${options}")</script>
                 <br>
                 <br>
                 <label for="scales">Scales</label>
@@ -60,7 +60,7 @@
 
         <div class="practice_log">
             <table id="table"></table>
-            <script>showTable( {{ data | tojson }} );</script>
+            <script th:inline="javascript">showTable("${data}");</script>
                      
         </div>
     </body>

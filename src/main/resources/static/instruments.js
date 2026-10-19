@@ -14,10 +14,10 @@ async function addInstruments(){
 
 
 function showInstruments(options){
-    options.forEach(option => {
+    for (let i = 0; i < options.length; i++){
         const add = document.createElement("option");
-        add.value = option;
-        add.textContent = option;
+        add.value = options[i];
+        add.textContent = options[i];
         document.getElementById("instrument").appendChild(add);
-    });
+    };
 }

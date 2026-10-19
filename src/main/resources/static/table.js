@@ -12,12 +12,12 @@ function showTable(data) {
     });
     table.appendChild(headerRow);
 
-    data.forEach(row => {
+    for(let i = 0; i < data.length; i++){
         const tableRow = document.createElement("tr");
 
         headers.forEach(header => {
             const td = document.createElement("td");
-            if (row[header] === "None") {
+            if (data[i][header] === "None") {
                 td.textContent = "";
             } else if (header === "Scales" || header === "Exercises/Studies" || header === "Pieces") {
                 td.textContent = "✔";
@@ -36,12 +36,12 @@ function showTable(data) {
                 })
                 td.appendChild(deleteButton)
             } else{
-                td.textContent = row[header];
+                td.textContent = data[i][header];
             }
             tableRow.appendChild(td)
         });
 
         table.appendChild(tableRow)
-    });
+    };
     
 }
