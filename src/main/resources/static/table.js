@@ -12,15 +12,22 @@ function showTable(data) {
     });
     table.appendChild(headerRow);
 
-    for(let i = 0; i < data.length; i++){
+    for(const row of data){
         const tableRow = document.createElement("tr");
 
-        headers.forEach(header => {
+        for(let j = 0; j < headers.length; j++){
+            const header = headers[j];
+            const value = row[header];
             const td = document.createElement("td");
-            if (data[i][header] === "None") {
+
+            if (value === "None") {
                 td.textContent = "";
             } else if (header === "Scales" || header === "Exercises/Studies" || header === "Pieces") {
-                td.textContent = "✔";
+                if (value === "on"){
+                    td.textContent = "✔";
+                } else{
+                    td.textContent = "";
+                }
             } else if (header === "Edit") {
                 const editButton = document.createElement("button");
                 editButton.textContent = "Edit";
@@ -36,10 +43,10 @@ function showTable(data) {
                 })
                 td.appendChild(deleteButton)
             } else{
-                td.textContent = data[i][header];
+                td.textContent = value;;
             }
             tableRow.appendChild(td)
-        });
+        };
 
         table.appendChild(tableRow)
     };

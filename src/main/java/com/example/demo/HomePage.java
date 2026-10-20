@@ -6,13 +6,14 @@ import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
 import java.time.LocalDate;
 
 @Controller 
 public class HomePage {
 
 	@GetMapping({"/", "/index"})
-	public String home(Model model) {
+	public String home(Model model) throws IOException{
 		LocalDate date = LocalDate.now();
 		model.addAttribute("today", date);
 
@@ -24,5 +25,10 @@ public class HomePage {
 
 		return "index";
 	}
+
+	//@PostMapping({"/", "/index"})
+	//public String updated(Model model) throws IOException{
+		//String date = request.parameter("date");
+	//}
 
 }
