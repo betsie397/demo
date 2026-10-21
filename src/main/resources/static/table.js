@@ -20,14 +20,14 @@ function showTable(data) {
             const value = row[header];
             const td = document.createElement("td");
 
-            if (value === "None") {
-                td.textContent = "";
-            } else if (header === "Scales" || header === "Exercises/Studies" || header === "Pieces") {
+            if (header === "Scales" || header === "Exercises/Studies" || header === "Pieces") {
                 if (value === "on"){
                     td.textContent = "✔";
                 } else{
                     td.textContent = "";
                 }
+            } else if (header === "Description") {
+                td.textContent = value.replace(/"/g, "");
             } else if (header === "Edit") {
                 const editButton = document.createElement("button");
                 editButton.textContent = "Edit";
@@ -43,7 +43,7 @@ function showTable(data) {
                 })
                 td.appendChild(deleteButton)
             } else{
-                td.textContent = value;;
+                td.textContent = value;
             }
             tableRow.appendChild(td)
         };

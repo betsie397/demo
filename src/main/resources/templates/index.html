@@ -15,46 +15,46 @@
 
         <div class="navbar">
             <a th:href="@{/}">Home</a>
-            <a th:href="@{/second.html}">Second Page</a>
+            <a th:href="@{/second}">Second Page</a>
         </div>
 
         <button type="button" onclick="showForm()">Click to add a new practice session</button> 
         <div id="form">
-            <form th:action="@{/}" method="POST">
+            <form action="#" th:action="@{/}" method="post" th:object="${practiceLog}">
                 <br>
                 <label for="date">Date:</label>
-                <input type="date" id="date" name="date" th:attr="max=${today}" required>
+                <input type="date" id="date" name="date" th:attr="max=${today}" th:field="*{date}" required>
                 <br>
                 <br>
                 <label for="duration">Duration:</label>
-                <input type="time" id="duration" name="duration" min="0" max="24" step="60" required>
+                <input type="time" id="duration" name="duration" min="0" max="24" step="60" th:field="*{duration}" required>
                 <br>
                 <br>
                 <label for="instrument">Instrument:</label>
-                <select id="instrument" name="instrument" onchange="if(this.value === 'add') addInstruments();" required>
-                    <option value="" disabled selected>Select an instrument</option>
+                <select id="instrument" name="instrument" onchange="if(this.value === 'add') addInstruments();" th:field="*{instrument}" required>
+                    <option value="">Select an instrument</option>
                     <option value="add">Add Instrument</option>
                 </select>
-                <script th:inline="javascript">showInstruments("${options}")</script>
+                <script th:inline="javascript">showInstruments([[${options}]])</script>
                 <br>
                 <br>
                 <label for="scales">Scales</label>
-                <input type="checkbox" id="scales" name="scales">
+                <input type="checkbox" id="scales" name="scales" value="true" th:field="*{scales}">
                 <br>
                 <label for="exercises">Exercises/Studies</label>
-                <input type="checkbox" id="exercises" name="exercises">
+                <input type="checkbox" id="exercises" name="exercises" value="true" th:field="*{exercises}">
                 <br>
                 <label for="pieces">Pieces</label>
-                <input type="checkbox" id="pieces" name="pieces">
+                <input type="checkbox" id="pieces" name="pieces" value="true" th:field="*{pieces}">
                 <br>
                 <br>
                 <label for="description">Description</label>
-                <input type="longtext" id="description" name="description">
+                <input type="longtext" id="description" name="description" th:field="*{description}">
                 <br>
                 <br>
                 <input type="submit" value="Submit">
                 <input type="Reset" value="Reset">
-                <button onclick="hideForm()">Close</button>
+                <button type="Reset" onclick="hideForm()">Close</button>
             </form>
         </div>
 

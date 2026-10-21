@@ -1,6 +1,5 @@
 function showForm(){
     var form = document.getElementById("form");
-    var body = document.getElementById("body");
     form.style.visibility = "visible";
 }
 
