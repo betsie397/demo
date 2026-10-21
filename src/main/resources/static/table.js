@@ -21,7 +21,7 @@ function showTable(data) {
             const td = document.createElement("td");
 
             if (header === "Scales" || header === "Exercises/Studies" || header === "Pieces") {
-                if (value === "on"){
+                if (value === "true"){
                     td.textContent = "✔";
                 } else{
                     td.textContent = "";

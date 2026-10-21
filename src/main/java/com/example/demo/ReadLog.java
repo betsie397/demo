@@ -30,13 +30,15 @@ public class ReadLog {
         "Date", "Duration", "Instrument", "Scales",
         "Exercises/Studies", "Pieces", "Description", "Date Entered"
     };
+	private static final Path csvFile =
+        Path.of("src/main/resources/static/practice_log.csv");
 
 	public static List<Map<String, String>> home() throws IOException{
 		List<Map<String, String>> rows = new ArrayList<>();
-		var csvFile = new ClassPathResource("static/practice_log.csv");
 		
-		try (Reader reader = new InputStreamReader(
-                 csvFile.getInputStream(), StandardCharsets.UTF_8);
+		
+		try (Reader reader = Files.newBufferedReader(
+                 csvFile, StandardCharsets.UTF_8);
              CSVParser parser = CSVFormat.DEFAULT.builder()
                  .setHeader(HEADERS)
                  .setSkipHeaderRecord(true)
@@ -58,7 +60,7 @@ public class ReadLog {
 	}
 
 	public static void writeEntry(String date, String duration, String instrument, String scales, String exercises, String pieces, String description, String dateEntered) throws IOException{
-	    Path csvFile = Path.of("data", "practice_log.csv");
+	    Path csvFile = Path.of("src/main/resources/static/practice_log.csv");
 		Files.createDirectories(csvFile.getParent());
 
 		try (BufferedWriter writer = Files.newBufferedWriter(

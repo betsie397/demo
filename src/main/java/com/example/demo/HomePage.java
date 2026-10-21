@@ -32,8 +32,8 @@ public class HomePage {
 
 	@PostMapping({"/", "/index"})
 	public String updated(@ModelAttribute("practiceLog") Log data, Model model) throws IOException{
-		System.out.println(data.getDate() + data.getDuration() + data.getInstrument() + data.getScales() + data.getExercises() + data.getPieces() + data.getDescription() + data.getDateEntered());
-		//ReadLog.writeEntry(data.getDate(), data.getDuration(), data.getInstrument(), data.getScales(), data.getExercises(), data.getPieces(), data.getDescription(), data.getDateEntered());
+		//System.out.println(data.getDate() + data.getDuration() + data.getInstrument() + data.getScales() + data.getExercises() + data.getPieces() + data.getDescription() + data.getDateEntered());
+		ReadLog.writeEntry(data.getDate(), data.getDuration(), data.getInstrument(), data.getScales(), data.getExercises(), data.getPieces(), data.getDescription(), data.getDateEntered());
 
 		return home(model);
 	}
