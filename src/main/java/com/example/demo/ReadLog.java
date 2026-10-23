@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.Reader;
 import java.util.Map;
 import java.util.LinkedHashMap;
@@ -28,6 +29,7 @@ import java.util.List;
 public class ReadLog {
 	private static final String[] HEADERS = {"ID", "Date", "Duration", "Instrument", "Scales", "Exercises/Studies", "Pieces", "Description", "Date Entered"};
 	private static final Path csvFile = Path.of("src/main/resources/static/practice_log.csv");
+	private static final Path txtFile = Path.of("static/instruments.txt");
 	public record ReadResult(List<Map<String, String>> rows, int lastId){}
 
 	public static ReadResult home() throws IOException{
@@ -71,15 +73,34 @@ public class ReadLog {
 		}
 	};
 
+	public static void deleteEntry(int id) throws IOException{
+		ReadResult contents = home();
+		List<Map<String, String>> rows = contents.rows();
+
+		try (BufferedWriter writer = Files.newBufferedWriter(
+			csvFile,
+			StandardCharsets.UTF_8,
+			StandardOpenOption.CREATE,
+			StandardOpenOption.TRUNCATE_EXISTING);
+			CSVPrinter csv = new CSVPrinter(writer, CSVFormat.DEFAULT)){
+				csv.printRecord(HEADERS);
+	
+				for(Map<String, String> row : rows){
+					if (Integer.parseInt(row.get("ID")) != id){
+						csv.printRecord(
+							row.get("ID"), row.get("Date"), row.get("Duration"), row.get("Instrument"), row.get("Scales"),
+							row.get("Exercises/Studies"), row.get("Pieces"), row.get("Description"), row.get("Date Entered"));
+						}
+			}}
+	}
+
 
 	public static String[] instruments() {
-		
-		ClassPathResource txtFile = new ClassPathResource("static/instruments.txt");
 		List<String> instruments = new ArrayList<>();
 
-		try (InputStream inputStream = txtFile.getInputStream();
-			 BufferedReader reader = new BufferedReader(
-                     new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+		try (InputStream inputStream = Files.newInputStream(txtFile);
+			BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 			String line;
 
 			while ((line = reader.readLine()) != null) {
@@ -94,6 +115,16 @@ public class ReadLog {
 		}
 
 		return instruments.toArray(new String[0]);
+	}
+
+	public static void newInstrument(String inserted) throws IOException{
+		String instrument = inserted.trim();
+
+		Files.writeString(txtFile, 
+			System.lineSeparator() + instrument, 
+			StandardCharsets.UTF_8, 
+			StandardOpenOption.CREATE, 
+			StandardOpenOption.APPEND);
 	}
 
 }

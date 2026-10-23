@@ -1,8 +1,4 @@
-ID, Date, Duration, Instrument, Scales, Exercises/Studies, Pieces, Description, Date Entered
-1,2026-10-06,12:49,Trumpet,,true,,,2026-10-21
-2,2026-10-06,12:49,Trumpet,,true,,,2026-10-21
+ID,Date,Duration,Instrument,Scales,Exercises/Studies,Pieces,Description,Date Entered
 3,2026-10-10,15:24,Piano,true,true,,,2026-10-21
 4,2026-10-10,14:25,Violin,,,true,tuning,2026-10-21
-
-5,2026-10-05,16:38,Harp,true,,true,,2026-10-21
-6,2026-10-10,17:38,Banjo,true,true,,c major,2026-10-21
+7,2026-10-12,03:30,Piano,true,,true,,2026-10-23

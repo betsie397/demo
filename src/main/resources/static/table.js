@@ -39,10 +39,9 @@ function showTable(data, id) {
                 td.appendChild(editButton);
             } else if (header === "Delete") {
                 const deleteButton = document.createElement("button");
-                deleteButton.id = "delete" + rowNo.toString();
                 deleteButton.textContent = "Delete";
                 deleteButton.addEventListener("click", () => {
-                    deleteEntry(data, deleteButton.id);
+                    deleteEntry(data, row.ID);
                 })
                 td.appendChild(deleteButton)
             } else{

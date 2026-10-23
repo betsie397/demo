@@ -2,7 +2,9 @@ package com.example.demo;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -41,6 +43,17 @@ public class HomePage {
 		ReadLog.writeEntry(data.getId(), data.getDate(), data.getDuration(), data.getInstrument(), data.getScales(), data.getExercises(), data.getPieces(), data.getDescription(), data.getDateEntered());
 
 		return home(model);
+	}
+
+	@DeleteMapping("delete/{id}")
+	public String deleted(@PathVariable int id, Model model) throws IOException{
+		ReadLog.deleteEntry(id);
+		return home(model);
+	}
+
+	@PostMapping("/instruments")
+	public void instruments() throws IOException{
+		ReadLog.instruments
 	}
 
 }
