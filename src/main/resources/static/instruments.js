@@ -1,12 +1,8 @@
 async function addInstruments(){
     const newInstrument = prompt("Please enter the name of the instrument you would like to add:")
     if (newInstrument) {
-        const response = await fetch('/instruments', {
+        const response = await fetch(`/instruments/${encodeURIComponent(newInstrument)}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ instrument: newInstrument })
         });
         document.getElementById("instrument").innerHTML += `<option value="${newInstrument}">${newInstrument}</option>`;
     }

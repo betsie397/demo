@@ -51,9 +51,10 @@ public class HomePage {
 		return home(model);
 	}
 
-	@PostMapping("/instruments")
-	public void instruments() throws IOException{
-		ReadLog.instruments
+	@PostMapping("/instruments/{inserted}")
+	public String instruments(@PathVariable String inserted, Model model) throws IOException{
+		ReadLog.newInstrument(inserted);
+		return home(model);
 	}
 
 }
