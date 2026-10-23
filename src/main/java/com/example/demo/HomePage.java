@@ -21,8 +21,11 @@ public class HomePage {
 		LocalDate date = LocalDate.now();
 		model.addAttribute("today", date);
 
-		List<Map<String, String>> map = ReadLog.home();
-		model.addAttribute("data", map);
+		ReadLog.ReadResult result = ReadLog.home();
+		int lastId = result.lastId();
+		List<Map<String, String>> rows = result.rows();
+		model.addAttribute("id", lastId);
+		model.addAttribute("data", rows);
 
 		String[] instruments = ReadLog.instruments();
 		model.addAttribute("options", instruments);
@@ -32,8 +35,10 @@ public class HomePage {
 
 	@PostMapping({"/", "/index"})
 	public String updated(@ModelAttribute("practiceLog") Log data, Model model) throws IOException{
-		//System.out.println(data.getDate() + data.getDuration() + data.getInstrument() + data.getScales() + data.getExercises() + data.getPieces() + data.getDescription() + data.getDateEntered());
-		ReadLog.writeEntry(data.getDate(), data.getDuration(), data.getInstrument(), data.getScales(), data.getExercises(), data.getPieces(), data.getDescription(), data.getDateEntered());
+		ReadLog.ReadResult result = ReadLog.home();
+		int lastId = result.lastId();
+		data.setId(lastId);
+		ReadLog.writeEntry(data.getId(), data.getDate(), data.getDuration(), data.getInstrument(), data.getScales(), data.getExercises(), data.getPieces(), data.getDescription(), data.getDateEntered());
 
 		return home(model);
 	}

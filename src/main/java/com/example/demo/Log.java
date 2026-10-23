@@ -3,6 +3,7 @@ package com.example.demo;
 import java.time.LocalDate;
 
 public class Log {
+    private int ID;
     private String date;
     private String duration;
     private String instrument;
@@ -16,7 +17,8 @@ public class Log {
         this.dateEntered = LocalDate.now().toString();
     }
 
-    public Log(String date, String duration, String instrument, String scales, String exercises, String pieces, String description){
+    public Log(int Id, String date, String duration, String instrument, String scales, String exercises, String pieces, String description){
+        this.ID = Id;
         this.date = date;
         this.duration = duration;
         this.instrument = instrument;
@@ -27,6 +29,9 @@ public class Log {
         this.dateEntered = LocalDate.now().toString();
     }
 
+    public void setId(int Id){
+        this.ID = Id + 1;
+    }
     public void setDate(String date){
         this.date = date;
     }
@@ -49,6 +54,9 @@ public class Log {
         this.description = description;
     }
 
+    public int getId(){
+        return ID;
+    }
     public String getDate(){
         return date;
     }

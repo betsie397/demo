@@ -26,16 +26,13 @@ import java.util.List;
 
 @Controller 
 public class ReadLog {
-	private static final String[] HEADERS = {
-        "Date", "Duration", "Instrument", "Scales",
-        "Exercises/Studies", "Pieces", "Description", "Date Entered"
-    };
-	private static final Path csvFile =
-        Path.of("src/main/resources/static/practice_log.csv");
+	private static final String[] HEADERS = {"ID", "Date", "Duration", "Instrument", "Scales", "Exercises/Studies", "Pieces", "Description", "Date Entered"};
+	private static final Path csvFile = Path.of("src/main/resources/static/practice_log.csv");
+	public record ReadResult(List<Map<String, String>> rows, int lastId){}
 
-	public static List<Map<String, String>> home() throws IOException{
+	public static ReadResult home() throws IOException{
 		List<Map<String, String>> rows = new ArrayList<>();
-		
+		int lastId = 0;
 		
 		try (Reader reader = Files.newBufferedReader(
                  csvFile, StandardCharsets.UTF_8);
@@ -47,20 +44,18 @@ public class ReadLog {
                  .parse(reader)) {
 
             for (CSVRecord record : parser) {
+				lastId = Integer.parseInt(record.get("ID"));
                 Map<String, String> row = new LinkedHashMap<>();
                 for (String header : HEADERS) {
                     row.put(header, record.get(header));
                 }
                 rows.add(row);
             }
-			parser.close();
 		}
-
-		return rows;
+		return new ReadResult(rows, lastId);
 	}
 
-	public static void writeEntry(String date, String duration, String instrument, String scales, String exercises, String pieces, String description, String dateEntered) throws IOException{
-	    Path csvFile = Path.of("src/main/resources/static/practice_log.csv");
+	public static void writeEntry(int id, String date, String duration, String instrument, String scales, String exercises, String pieces, String description, String dateEntered) throws IOException{
 		Files.createDirectories(csvFile.getParent());
 
 		try (BufferedWriter writer = Files.newBufferedWriter(
@@ -71,7 +66,7 @@ public class ReadLog {
 			CSVPrinter csv = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
 
 			csv.printRecord(
-					date, duration, instrument, scales,
+					id, date, duration, instrument, scales,
 					exercises, pieces, description, dateEntered);
 		}
 	};

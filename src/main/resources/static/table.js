@@ -1,8 +1,9 @@
 
 
-function showTable(data) {
+function showTable(data, id) {
     const table = document.getElementById("table");
     const headers = ["Date", "Duration", "Instrument", "Scales", "Exercises/Studies", "Pieces", "Description", "Date Entered", "Edit", "Delete"];
+    var rowNo = 0;
 
     const headerRow = document.createElement("tr");
     headers.forEach(header => {
@@ -14,6 +15,7 @@ function showTable(data) {
 
     for(const row of data){
         const tableRow = document.createElement("tr");
+        rowNo ++;
 
         for(let j = 0; j < headers.length; j++){
             const header = headers[j];
@@ -37,9 +39,10 @@ function showTable(data) {
                 td.appendChild(editButton);
             } else if (header === "Delete") {
                 const deleteButton = document.createElement("button");
+                deleteButton.id = "delete" + rowNo.toString();
                 deleteButton.textContent = "Delete";
                 deleteButton.addEventListener("click", () => {
-                    // Implement delete functionality here
+                    deleteEntry(data, deleteButton.id);
                 })
                 td.appendChild(deleteButton)
             } else{
