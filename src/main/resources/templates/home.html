@@ -7,11 +7,12 @@
         <script th:src="@{/table.js}"></script>
         <script th:src="@{/instruments.js}"></script>
         <script th:src="@{/delete_entry.js}"></script>
+        <script th:src="@{/edit_entry.js}"></script>
     </head>
 
     <body>
         <div class="title">
-            <h1>Music Tracker !!!!!!!!!!</h1>
+            <h1>Music Tracker</h1>
         </div>
 
         <div class="navbar">
@@ -53,7 +54,7 @@
                 <input type="longtext" id="description" name="description" th:field="*{description}">
                 <br>
                 <br>
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" id="submit">
                 <input type="Reset" value="Reset">
                 <button type="Reset" onclick="hideForm()">Close</button>
             </form>

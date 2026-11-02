@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Practice Tracker</title>
+        <link th:href="@{/styles.css}" type="text/css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="title">
+            <h1>Music Tracker</h1>
+        </div>
+
+        <div id="form">
+            <form style="visibility: visible" action="#" th:action="@{/}" method="post">
+                <h3>Login</h3>
+                <br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <br>
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <button th:href="@{/sign-up}">Sign Up</button>
+                <input type="submit" value="Submit" id="submit">
+            </form>
+        </div>
+    </body>
+</html>

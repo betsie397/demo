@@ -11,8 +11,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.Reader;
 import java.util.Map;
 import java.util.LinkedHashMap;
@@ -21,10 +23,9 @@ import java.util.List;
 
 
 @Controller 
-public class ReadLog {
+public class AccessLog {
 	private static final String[] HEADERS = {"ID", "Date", "Duration", "Instrument", "Scales", "Exercises/Studies", "Pieces", "Description", "Date Entered"};
 	private static final Path csvFile = Path.of("src/main/resources/static/practice_log.csv");
-	private static final Path txtFile = Path.of("src/main/resources/static/instruments.txt");
 	public record ReadResult(List<Map<String, String>> rows, int lastId){}
 
 	public static ReadResult home() throws IOException{
@@ -70,40 +71,62 @@ public class ReadLog {
 
 	public static void deleteEntry(int id) throws IOException{
 		ReadResult contents = home();
-		List<Map<String, String>> rows = contents.rows();
 
 		try (BufferedWriter writer = Files.newBufferedWriter(
 			csvFile,
 			StandardCharsets.UTF_8,
 			StandardOpenOption.CREATE,
 			StandardOpenOption.TRUNCATE_EXISTING);
-			CSVPrinter csv = new CSVPrinter(writer, CSVFormat.DEFAULT)){
-				csv.printRecord(HEADERS);
-	
-				for(Map<String, String> row : rows){
-					if (Integer.parseInt(row.get("ID")) != id){
-						csv.printRecord(
-							row.get("ID"), row.get("Date"), row.get("Duration"), row.get("Instrument"), row.get("Scales"),
-							row.get("Exercises/Studies"), row.get("Pieces"), row.get("Description"), row.get("Date Entered"));
-						}
+			CSVPrinter csv = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+			csv.printRecord((Object[]) HEADERS);
+
+			for (Map<String, String> row : contents.rows()) {
+				if (Integer.parseInt(row.get("ID")) == id) {
+					continue;
+				}
+				csv.printRecord(
+					row.get("ID"), row.get("Date"), row.get("Duration"), row.get("Instrument"), row.get("Scales"),
+					row.get("Exercises/Studies"), row.get("Pieces"), row.get("Description"), row.get("Date Entered"));
 			}}
 	}
 
+	public static void updateEntry(int id, Log data) throws IOException{
+		Path path = Paths.get("src/main/resources/static/practice_log.csv"); 
+		List<String[]> rows = new ArrayList<>();
+		boolean found = false;
 
-	public static String[] instruments() throws IOException {
-		List<String> instruments = Files.readAllLines(txtFile);
+		try (CSVParser parser = CSVParser.parse(path, StandardCharsets.UTF_8,
+				CSVFormat.DEFAULT)) {
+			for (CSVRecord record : parser) {
+				String[] row = new String[record.size()];
+				for (int i = 0; i < record.size(); i++) {
+					row[i] = record.get(i);
+				}
 
-		return instruments.toArray(new String[0]);
+				if (record.get(0).equals(String.valueOf(id))) {
+					row[1] = data.getDate();
+					row[2] = data.getDuration();
+					row[3] = data.getInstrument();
+					row[4] = data.getScales();
+					row[5] = data.getExercises();
+					row[6] = data.getPieces();
+					row[7] = data.getDescription();
+					found = true;
+				}
+
+				rows.add(row);
+        }}
+
+		if (!found) {
+        throw new FileNotFoundException("No log entry with ID " + id);
+    }
+
+		try (CSVPrinter printer = new CSVPrinter(
+				Files.newBufferedWriter(path, StandardCharsets.UTF_8),
+				CSVFormat.DEFAULT)) {
+			for (String[] row : rows) {
+				printer.printRecord((Object[]) row);
+			}
+		}
 	}
-
-	public static void newInstrument(String inserted) throws IOException{
-		String instrument = inserted.trim();
-
-		Files.writeString(txtFile, 
-			System.lineSeparator() + instrument, 
-			StandardCharsets.UTF_8, 
-			StandardOpenOption.CREATE, 
-			StandardOpenOption.APPEND);
-	}
-
 }

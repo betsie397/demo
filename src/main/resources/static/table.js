@@ -34,7 +34,7 @@ function showTable(data, id) {
                 const editButton = document.createElement("button");
                 editButton.textContent = "Edit";
                 editButton.addEventListener("click", () => {
-                    editEntry();
+                    editEntry(row);
                 })
                 td.appendChild(editButton);
             } else if (header === "Delete") {

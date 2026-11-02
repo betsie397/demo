@@ -22,7 +22,7 @@ body{
     position: relative;
 }
 
-#form{
+form{
     background-color: lightblue;
     text-align: center;
     width: 50%;
