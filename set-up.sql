@@ -15,6 +15,7 @@ CREATE TABLE user_instruments(
     instrument_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (instrument_id) REFERENCES instruments(instrument_id)
+    CONSTRAINT entry_id PRIMARY KEY (user_id, instrument_id)
 );
 
 CREATE TABLE practice_log(
@@ -31,3 +32,4 @@ CREATE TABLE practice_log(
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (instrument_id) REFERENCES instruments(instrument_id)
 );
+
