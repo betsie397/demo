@@ -27,8 +27,13 @@ public class Login{
 	}
 
     @PostMapping({"/", "/login"})
-    public String loggedIn(Model model) throws IOException{
-		return new HomePage().home(model);
+    public String loggedIn(@RequestParam String email, @RequestParam String password, Model model) throws IOException{
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        boolean valid = userRepository.findByEmail(email).map(user -> encoder.matches(password, user.getPasswordHash())).orElse(false);
+        if (valid) { return "redirect:/home"; }
+
+		return login(model);
     }
 
     @GetMapping("/sign-up")
