@@ -28,7 +28,7 @@
                 <input type="password" id="password" name="password" required>
                 <br>
                 <br>
-                <button th:href="@{/login}">Login</button>
+                <button type="button" th:onclick="|window.location.href='@{/login}'|">Login</button>
                 <input type="submit" value="Submit" id="submit">
             </form>
         </div>

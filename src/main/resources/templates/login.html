@@ -20,7 +20,8 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
                 <br>
-                <button th:href="@{/sign-up}">Sign Up</button>
+                <br>
+                <button type="button" th:onclick="|window.location.href='@{/sign-up}'|">Sign Up</button>
                 <input type="submit" value="Submit" id="submit">
             </form>
         </div>

@@ -1,12 +1,18 @@
-async function addInstruments(){
-    const newInstrument = prompt("Please enter the name of the instrument you would like to add:")
-    if (newInstrument) {
-        const response = await fetch(`/instruments/${encodeURIComponent(newInstrument)}`, {
-            method: 'POST',
-        });
-        document.getElementById("instrument").innerHTML += `<option value="${newInstrument}">${newInstrument}</option>`;
-    }
-}
+import {useState} from "react";
+
+function instrumentPicker(){
+    const [instruments, setInstruments] = useState([]);
+
+    async function addInstruments(){
+        const newInstrument = prompt("Please enter the name of the instrument you would like to add:").trim();
+        if (newInstrument) {
+            const response = await fetch(`/instruments/${encodeURIComponent(newInstrument)}`, {
+                method: 'POST',
+            });
+            setInstruments((current) => 
+            current.includes(newInstrument) ? current : [...current, newInstrument])
+        }
+    }}
 
 
 function showInstruments(options){
