@@ -1,10 +1,11 @@
-package com.example.demo;
+package src.main.java.com.example.demo;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Controller;
+import com.example.demo.entity.Log;
 
 
 import java.io.IOException;
@@ -107,9 +108,9 @@ public class AccessLog {
 					row[1] = data.getDate();
 					row[2] = data.getDuration();
 					row[3] = data.getInstrument();
-					row[4] = data.getScales();
-					row[5] = data.getExercises();
-					row[6] = data.getPieces();
+					row[4] = String.valueOf(data.getScales());
+					row[5] = String.valueOf(data.getExercises());
+					row[6] = String.valueOf(data.getPieces());
 					row[7] = data.getDescription();
 					found = true;
 				}

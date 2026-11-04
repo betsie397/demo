@@ -1,24 +1,49 @@
-package com.example.demo;
+package src.main.java.com.example.demo.entity;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "practice_log")
 public class Log {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "log_id")
     private int ID;
+
+    @Column(name = "user_id", nullable = false)
+    private int user_id;
+
+    @Column(name = "practice_date", nullable = false)
     private String date;
+
+    @Column(name = "duration", nullable = false)
     private String duration;
+
+    @Column(name = "instrument_id", nullable = false)
     private String instrument;
-    private String scales;
-    private String exercises;
-    private String pieces;
+
+    @Column(name = "scales")
+    private Boolean scales;
+
+    @Column(name = "exercises")
+    private Boolean exercises;
+
+    @Column(name = "pieces")
+    private Boolean pieces;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "date_entered")
     private String dateEntered;
 
     public Log(){
         this.dateEntered = LocalDate.now().toString();
     }
 
-    public Log(int Id, String date, String duration, String instrument, String scales, String exercises, String pieces, String description){
-        this.ID = Id;
+    public Log(String date, String duration, String instrument, Boolean scales, Boolean exercises, Boolean pieces, String description, LocalDate dateEntered){
         this.date = date;
         this.duration = duration;
         this.instrument = instrument;
@@ -41,13 +66,13 @@ public class Log {
     public void setInstrument(String instrument){
         this.instrument = instrument;
     }
-    public void setScales(String scales){
+    public void setScales(Boolean scales){
         this.scales = scales;
     }
-    public void setExercises(String exercises){
+    public void setExercises(Boolean exercises){
         this.exercises = exercises;
     }
-    public void setPieces(String pieces){
+    public void setPieces(Boolean pieces){
         this.pieces = pieces;
     }
     public void setDescription(String description){
@@ -66,13 +91,13 @@ public class Log {
     public String getInstrument(){
         return instrument;
     }
-    public String getScales(){
+    public Boolean getScales(){
         return scales;
     }
-    public String getExercises(){
+    public Boolean getExercises(){
         return exercises;
     }
-    public String getPieces(){
+    public Boolean getPieces(){
         return pieces;
     }
     public String getDescription(){

@@ -6,9 +6,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import com.example.demo.repository.LogRepository;
+import com.example.demo.entity.Log;
 import java.util.List;
 import java.util.Map;
 import java.io.IOException;
@@ -16,6 +19,11 @@ import java.time.LocalDate;
 
 @Controller 
 public class HomePage {
+	private final LogRepository logRepository;
+
+	public HomePage(LogRepository logRepository){
+		this.logRepository = logRepository;
+	}
 
 	@GetMapping("/home")
 	public String home(Model model) throws IOException{
@@ -37,11 +45,10 @@ public class HomePage {
 	}
 
 	@PostMapping("/home")
-	public String updated(@ModelAttribute("practiceLog") Log data, Model model) throws IOException{
-		AccessLog.ReadResult result = AccessLog.home();
-		int lastId = result.lastId();
-		data.setId(lastId);
-		AccessLog.writeEntry(data.getId(), data.getDate(), data.getDuration(), data.getInstrument(), data.getScales(), data.getExercises(), data.getPieces(), data.getDescription(), data.getDateEntered());
+	public String updated(@RequestParam String date, @RequestParam String duration, @RequestParam String instrument, @RequestParam boolean scales, 
+		@RequestParam boolean exercises, @RequestParam boolean pieces, @RequestParam String description, Model model) throws IOException{
+		
+		logRepository.save(new Log(date, duration, instrument, scales, exercises, pieces, description, LocalDate.now()));
 
 		return home(model);
 	}
