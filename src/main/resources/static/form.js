@@ -1,11 +1,9 @@
 function showForm(){
-    var form = document.getElementById("form");
-    form.style.visibility = "visible";
+    document.querySelector("#form form").style.visibility = "visible";
 }
 
 function hideForm(){
-    var form = document.getElementById("form")
-    form.style.visibility = "hidden";
+    document.querySelector("#form form").style.visibility = "hidden";
 }
 
 function editEntry(data){

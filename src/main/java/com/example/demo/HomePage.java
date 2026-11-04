@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 
 import com.example.demo.repository.LogRepository;
 import com.example.demo.entity.Log;
+import com.example.demo.repository.InstrumentRepository;
+import com.example.demo.entity.Instrument;
+
 import java.util.List;
 import java.util.Map;
 import java.io.IOException;
@@ -20,9 +23,11 @@ import java.time.LocalDate;
 @Controller 
 public class HomePage {
 	private final LogRepository logRepository;
+	private final InstrumentRepository instrumentRepository;
 
-	public HomePage(LogRepository logRepository){
+	public HomePage(LogRepository logRepository, InstrumentRepository instrumentRepository){
 		this.logRepository = logRepository;
+		this.instrumentRepository = instrumentRepository;
 	}
 
 	@GetMapping("/home")
@@ -38,7 +43,7 @@ public class HomePage {
 		model.addAttribute("id", lastId);
 		model.addAttribute("data", rows);
 
-		String[] instruments = AccessInstruments.instruments();
+		List<String> instruments = instrumentRepository.findAll().stream().map(Instrument::getInstrumentName).toList();
 		model.addAttribute("options", instruments);
 
 		return "home";
@@ -59,9 +64,9 @@ public class HomePage {
 		return home(model);
 	}
 
-	@PostMapping("/instruments/{inserted}")
-	public String instruments(@PathVariable String inserted, Model model) throws IOException{
-		AccessInstruments.newInstrument(inserted);
+	@PostMapping("/instruments")
+	public String instruments(@RequestParam String instrumentName, Model model) throws IOException{
+		instrumentRepository.save(new Instrument(instrumentName));
 		return home(model);
 	}
 
