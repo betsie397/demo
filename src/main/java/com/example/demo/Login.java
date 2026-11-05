@@ -60,6 +60,6 @@ public class Login{
 
         User savedUser = userRepository.save(user);
         session.setAttribute("userId", savedUser.getId());
-        return "redirect:/home";
+        return "redirect:/settings";
     }
 }

@@ -86,9 +86,7 @@ function instrumentTable(user, instruments) {
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
         deleteButton.addEventListener("click", event  => {
-            //event.preventDefault();
-            //event.stopPropagation();
-            //deleteEntry(row.id);
+            deleteInstrument(row.instrumentId, row.userId);
         })
         deleteTd.appendChild(deleteButton);
         tr.appendChild(deleteTd);

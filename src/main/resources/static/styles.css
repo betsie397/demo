@@ -1,7 +1,7 @@
 :root {
     --hue:220;
     --accent: oklch(60% 0.18 var(--hue));
-    --accent-light: oklch(75% 0.04 var(--hue));
+    --accent-light: oklch(80% 0.10 var(--hue));
 }
 
 body{
@@ -14,13 +14,20 @@ body{
     text-align: center;
     width: 100%;
     box-sizing: border-box;
+    margin: 0;
 }
 
 .navbar{
     background-color: var(--accent);
+    color: lightgray;
     columns: 33.33% 3;
     text-align: center;
     position: relative;
+}
+
+.navbar a:visited{
+    color: lightgray;
+    text-decoration: none;
 }
 
 form{

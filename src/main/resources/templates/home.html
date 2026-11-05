@@ -38,7 +38,7 @@
                     <option value="">Select an instrument</option>
                     <option value="add">Add Instrument</option>
                 </select>
-                <script th:inline="javascript">showInstruments([[${options}]])</script>
+                <script th:inline="javascript">showInstruments([[${instruments}]], [[${options}]])</script>
                 <br>
                 <br>
                 <label for="scales">Scales</label>

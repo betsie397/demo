@@ -16,6 +16,8 @@ import com.example.demo.repository.LogRepository;
 import com.example.demo.entity.Log;
 import com.example.demo.repository.InstrumentRepository;
 import com.example.demo.entity.Instrument;
+import com.example.demo.repository.UserInstrumentRepository;
+import com.example.demo.entity.UserInstrument;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
@@ -27,10 +29,12 @@ import java.time.LocalDate;
 public class HomePage {
 	private final LogRepository logRepository;
 	private final InstrumentRepository instrumentRepository;
+	private final UserInstrumentRepository userInstrumentRepository;
 
-	public HomePage(LogRepository logRepository, InstrumentRepository instrumentRepository){
+	public HomePage(LogRepository logRepository, InstrumentRepository instrumentRepository, UserInstrumentRepository userInstrumentRepository){
 		this.logRepository = logRepository;
 		this.instrumentRepository = instrumentRepository;
+		this.userInstrumentRepository = userInstrumentRepository;
 	}
 
 	@GetMapping("/home")
@@ -45,7 +49,10 @@ public class HomePage {
 		model.addAttribute("data", rows);
 
 		List<Instrument> instruments = instrumentRepository.findAll();
-		model.addAttribute("options", instruments);
+		model.addAttribute("instruments", instruments);
+
+		List<UserInstrument> options = userInstrumentRepository.findByUserId(userId);
+		model.addAttribute("options", options);
 
 		return "home";
 	}
