@@ -1,7 +1,6 @@
 
 
 function showTable(data, instruments) {
-    console.log(data);
     const table = document.getElementById("table");
     const headers = [["date", "Date"], ["duration", "Duration"], ["instrumentId", "Instrument"], ["scales", "Scales"], ["exercises", "Exercises"], ["pieces", "Pieces"], ["description", "Description"], ["dateEntered", "Date Entered"], ["edit", "Edit"], ["delete", "Delete"]];
 
@@ -62,3 +61,37 @@ function showTable(data, instruments) {
     }
     
 }
+
+function instrumentTable(user, instruments) {
+    const table = document.getElementById("table");
+    const headers = ["Instrument", "Delete"];
+
+    const headerRow = document.createElement("tr");
+    headers.forEach(header => {
+        const th = document.createElement("th")
+        th.textContent = header;
+        headerRow.appendChild(th);
+    });
+    table.appendChild(headerRow);
+ 
+    for (const row of user){
+        const tr = document.createElement("tr");
+
+        const instrumentTd = document.createElement("td");
+        const instrument = instruments.find(item => Number(item.instrumentId) == Number(row.instrumentId));
+        instrumentTd.textContent = instrument?.name ?? instrument?.instrumentName ?? "";
+        tr.appendChild(instrumentTd);
+
+        const deleteTd = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", event  => {
+            //event.preventDefault();
+            //event.stopPropagation();
+            //deleteEntry(row.id);
+        })
+        deleteTd.appendChild(deleteButton);
+        tr.appendChild(deleteTd);
+        
+        table.appendChild(tr);
+}}

@@ -1,0 +1,30 @@
+
+<html>
+    <head xmlns:th="http://www.thymeleaf.org">
+        <title>Practice Tracker</title>
+        <link th:href="@{/styles.css}" type="text/css" rel="stylesheet">
+        <script th:src="@{/table.js}"></script>
+        <script th:src="@{/delete_entry.js}"></script>
+        <script th:src="@{/colors.js}"></script>
+    </head>
+    <body>
+        <div class ="title">
+            <h1>page 2 </h1>
+        </div>
+        <div class="navbar">
+            <a th:href="@{/home}">Home</a>
+            <a th:href="@{/settings}">Settings</a>
+            <a th:href="@{/login}">Logout</a>
+        </div>
+
+        <label for="hue">Color scheme</label>
+        <input id="hue" type="range" min="1" max="360" value="220">
+        <script th:inline="javascript">colorSlider();</script>
+
+        <div class="practice_log">
+            <table id="table"></table>
+            <script th:inline="javascript">instrumentTable([[${user}]], [[${instruments}]]);</script>       
+        </div>
+
+    </body>
+</html>
