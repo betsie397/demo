@@ -107,7 +107,7 @@ public class AccessLog {
 				if (record.get(0).equals(String.valueOf(id))) {
 					row[1] = data.getDate();
 					row[2] = data.getDuration();
-					row[3] = data.getInstrument();
+					row[3] = String.valueOf(data.getInstrumentId());
 					row[4] = String.valueOf(data.getScales());
 					row[5] = String.valueOf(data.getExercises());
 					row[6] = String.valueOf(data.getPieces());

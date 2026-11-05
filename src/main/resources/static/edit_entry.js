@@ -1,36 +1,42 @@
-async function editEntry(row){
-    var form = document.getElementById("form");
+async function editEntry(row, instruments){
+    var form = document.querySelector("#form form");
     form.style.visibility = "visible";
 
-    var id = row["ID"];
+    const instrument = instruments.find(item => Number(item.instrumentId) === Number(row.instrumentId));
 
-    document.getElementById("date").value = row["Date"];
-    document.getElementById("duration").value = row["Duration"];
-    document.getElementById("instrument").value = row["Instrument"];
-    document.getElementById("scales").checked = row["Scales"] === "true";
-    document.getElementById("exercises").checked = row["Exercises/Studies"] === "true";
-    document.getElementById("pieces").checked = row["Pieces"] === "true";
-    document.getElementById("description").value = row["Description"] ?? "";
+    document.getElementById("instrument").value = instrument?.instrumentName ?? "";
+
+    var id = row["id"];
+
+    document.getElementById("date").value = row["date"];
+    document.getElementById("duration").value = row["duration"];
+
+    document.getElementById("scales").checked = row["scales"] === true;
+    document.getElementById("exercises").checked = row["exercises"] === true;
+    document.getElementById("pieces").checked = row["pieces"] === true;
+    document.getElementById("description").value = row["description"] ?? "";
     
-    document.querySelector("#form form").addEventListener("submit", async event => {
+    form.onsubmit = async event => {
         event.preventDefault();
+        form.style.visibility = "hidden";
 
-        const payload = {
-        date: document.getElementById("date").value,
-        duration: document.getElementById("duration").value,
-        instrument: document.getElementById("instrument").value,
-        scales: document.getElementById("scales").checked ? "true" : "",
-        exercises: document.getElementById("exercises").checked ? "true" : "",
-        pieces: document.getElementById("pieces").checked ? "true" : "",
-        description: document.getElementById("description").value
-    };
+        const payload = new URLSearchParams({
+            date: document.getElementById("date").value,
+            duration: document.getElementById("duration").value,
+            instrument: document.getElementById("instrument").value,
+            scales: document.getElementById("scales").checked ? true : false,
+            exercises: document.getElementById("exercises").checked ? true : false,
+            pieces: document.getElementById("pieces").checked ? true : false,
+            description: document.getElementById("description").value
+    });
     
     const response = await fetch(`/edit/${encodeURIComponent(id)}`, {
         method: "PUT",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(payload)
+        headers: {"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"},
+        body: payload
     });
 
-    window.location.reload();
-    });
+    if (response.ok){
+    window.location.assign("/home");}
+};
 };

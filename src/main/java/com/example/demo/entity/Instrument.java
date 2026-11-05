@@ -25,4 +25,8 @@ public class Instrument {
         return instrumentName;
     }
 
+    public int getInstrumentId(){
+        return id;
+    }
+
 }

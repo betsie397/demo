@@ -32,4 +32,8 @@ public class User {
         return passwordHash;
     }
 
+    public Integer getId(){
+        return id;
+    }
+
 }

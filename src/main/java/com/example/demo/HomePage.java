@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +17,7 @@ import com.example.demo.entity.Log;
 import com.example.demo.repository.InstrumentRepository;
 import com.example.demo.entity.Instrument;
 
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.io.IOException;
@@ -31,50 +34,72 @@ public class HomePage {
 	}
 
 	@GetMapping("/home")
-	public String home(Model model) throws IOException{
-		model.addAttribute("practiceLog", new Log());
+	public String home(Model model, HttpSession session) throws IOException{
+		Integer userId = (Integer) session.getAttribute("userId");
+		if (userId == null) { return "redirect:/login"; }
 
 		LocalDate date = LocalDate.now();
 		model.addAttribute("today", date);
 
-		AccessLog.ReadResult result = AccessLog.home();
-		int lastId = result.lastId();
-		List<Map<String, String>> rows = result.rows();
-		model.addAttribute("id", lastId);
+		List<Log> rows = logRepository.findByUserId(userId);
 		model.addAttribute("data", rows);
 
-		List<String> instruments = instrumentRepository.findAll().stream().map(Instrument::getInstrumentName).toList();
+		List<Instrument> instruments = instrumentRepository.findAll();
 		model.addAttribute("options", instruments);
 
 		return "home";
 	}
 
 	@PostMapping("/home")
-	public String updated(@RequestParam String date, @RequestParam String duration, @RequestParam String instrument, @RequestParam boolean scales, 
-		@RequestParam boolean exercises, @RequestParam boolean pieces, @RequestParam String description, Model model) throws IOException{
-		
-		logRepository.save(new Log(date, duration, instrument, scales, exercises, pieces, description, LocalDate.now()));
+	public String updated(@RequestParam String date, @RequestParam String duration, @RequestParam String instrument, 
+		@RequestParam(defaultValue = "false") boolean scales, @RequestParam(defaultValue = "false") boolean exercises, 
+		@RequestParam(defaultValue = "false") boolean pieces, @RequestParam String description, Model model, HttpSession session) throws IOException{
+		Integer userId = (Integer) session.getAttribute("userId");
+		if (userId == null) { return "redirect:/login"; }
 
-		return home(model);
+		Instrument selected = instrumentRepository.findByInstrumentName(instrument).orElseThrow(() ->
+			new IllegalArgumentException("Instrument not found"));
+		
+		Log log = new Log(date, duration, selected.getInstrumentId(), scales, exercises, pieces, description, LocalDate.now());
+		log.setUserId(userId);
+		logRepository.save(log);
+
+		return home(model, session);
 	}
 
-	@DeleteMapping("delete/{id}")
-	public String deleted(@PathVariable int id, Model model) throws IOException{
-		AccessLog.deleteEntry(id);
-		return home(model);
+	@DeleteMapping("/delete/{id}")
+	@ResponseBody
+	public ResponseEntity deleted(@PathVariable int id, Model model) throws IOException{
+		logRepository.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PostMapping("/instruments")
 	public String instruments(@RequestParam String instrumentName, Model model) throws IOException{
 		instrumentRepository.save(new Instrument(instrumentName));
-		return home(model);
+		return "redirect:/home";
 	}
 
 	@PutMapping("/edit/{id}")
-	public String edit(@PathVariable int id, @ModelAttribute("practiceLog") Log data, Model model) throws IOException{
-		AccessLog.updateEntry(id, data);
+	@ResponseBody
+	public ResponseEntity edit(@PathVariable int id, @RequestParam String date, @RequestParam String duration, @RequestParam String instrument, 
+		@RequestParam(defaultValue = "false") boolean scales, @RequestParam(defaultValue = "false") boolean exercises, 
+		@RequestParam(defaultValue = "false") boolean pieces, @RequestParam String description, Model model) throws IOException{
+		Instrument selected = instrumentRepository.findByInstrumentName(instrument).orElseThrow(() ->
+			new IllegalArgumentException("Instrument not found"));
 
-		return home(model);
+		Log log = logRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Log not found"));
+
+		log.setDate(date);
+		log.setDuration(duration);
+		log.setInstrument(selected.getInstrumentId());
+		log.setScales(scales);
+		log.setExercises(exercises);
+		log.setPieces(pieces);
+		log.setDescription(description);
+
+		logRepository.save(log);
+		return ResponseEntity.noContent().build();
 	}
-
 }

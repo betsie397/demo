@@ -10,10 +10,10 @@ public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "log_id")
-    private int ID;
+    private int id;
 
-    @Column(name = "user_id", nullable = false)
-    private int user_id;
+    @Column(name = "userId", nullable = false)
+    private int userId;
 
     @Column(name = "practice_date", nullable = false)
     private String date;
@@ -22,7 +22,7 @@ public class Log {
     private String duration;
 
     @Column(name = "instrument_id", nullable = false)
-    private String instrument;
+    private int instrumentId;
 
     @Column(name = "scales")
     private Boolean scales;
@@ -43,10 +43,12 @@ public class Log {
         this.dateEntered = LocalDate.now().toString();
     }
 
-    public Log(String date, String duration, String instrument, Boolean scales, Boolean exercises, Boolean pieces, String description, LocalDate dateEntered){
+    public Log(int id, int userId, String date, String duration, int instrumentId, Boolean scales, Boolean exercises, Boolean pieces, String description, LocalDate dateEntered){
+        this.id = id;
+        this.userId = userId;
         this.date = date;
         this.duration = duration;
-        this.instrument = instrument;
+        this.instrumentId = instrumentId;
         this.scales = scales;
         this.exercises = exercises;
         this.pieces = pieces;
@@ -54,8 +56,22 @@ public class Log {
         this.dateEntered = LocalDate.now().toString();
     }
 
-    public void setId(int Id){
-        this.ID = Id + 1;
+    public Log(String date, String duration, int instrumentId, Boolean scales, Boolean exercises, Boolean pieces, String description, LocalDate dateEntered){
+        this.date = date;
+        this.duration = duration;
+        this.instrumentId = instrumentId;
+        this.scales = scales;
+        this.exercises = exercises;
+        this.pieces = pieces;
+        this.description = description;
+        this.dateEntered = LocalDate.now().toString();
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+    public void setUserId(int userId){
+        this.userId = userId;
     }
     public void setDate(String date){
         this.date = date;
@@ -63,8 +79,8 @@ public class Log {
     public void setDuration(String duration){
         this.duration = duration;
     }
-    public void setInstrument(String instrument){
-        this.instrument = instrument;
+    public void setInstrument(int instrumentId){
+        this.instrumentId = instrumentId;
     }
     public void setScales(Boolean scales){
         this.scales = scales;
@@ -80,7 +96,10 @@ public class Log {
     }
 
     public int getId(){
-        return ID;
+        return id;
+    }
+    public int getUserId(){
+        return userId;
     }
     public String getDate(){
         return date;
@@ -88,8 +107,8 @@ public class Log {
     public String getDuration(){
         return duration;
     }
-    public String getInstrument(){
-        return instrument;
+    public int getInstrumentId(){
+        return instrumentId;
     }
     public Boolean getScales(){
         return scales;

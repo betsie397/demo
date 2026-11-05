@@ -22,18 +22,18 @@
 
         <button type="button" onclick="showForm()">Click to add a new practice session</button> 
         <div id="form">
-            <form action="#" th:action="@{/}" method="post" th:object="${practiceLog}">
+            <form action="#" th:action="@{/home}" method="post">
                 <br>
                 <label for="date">Date:</label>
-                <input type="date" id="date" name="date" th:attr="max=${today}" th:field="*{date}" required>
+                <input type="date" id="date" name="date" th:attr="max=${today}" required>
                 <br>
                 <br>
                 <label for="duration">Duration:</label>
-                <input type="time" id="duration" name="duration" min="0" max="24" step="60" th:field="*{duration}" required>
+                <input type="time" id="duration" name="duration" min="0" max="24" step="60" required>
                 <br>
                 <br>
                 <label for="instrument">Instrument:</label>
-                <select id="instrument" name="instrument" onchange="if (this.value === 'add') addInstruments();" th:field="*{instrument}" required>
+                <select id="instrument" name="instrument" onchange="if (this.value === 'add') addInstruments();" required>
                     <option value="">Select an instrument</option>
                     <option value="add">Add Instrument</option>
                 </select>
@@ -41,17 +41,17 @@
                 <br>
                 <br>
                 <label for="scales">Scales</label>
-                <input type="checkbox" id="scales" name="scales" value="true" th:field="*{scales}">
+                <input type="checkbox" id="scales" name="scales" value="true">
                 <br>
                 <label for="exercises">Exercises/Studies</label>
-                <input type="checkbox" id="exercises" name="exercises" value="true" th:field="*{exercises}">
+                <input type="checkbox" id="exercises" name="exercises" value="true">
                 <br>
                 <label for="pieces">Pieces</label>
-                <input type="checkbox" id="pieces" name="pieces" value="true" th:field="*{pieces}">
+                <input type="checkbox" id="pieces" name="pieces" value="true">
                 <br>
                 <br>
                 <label for="description">Description</label>
-                <input type="longtext" id="description" name="description" th:field="*{description}">
+                <input type="longtext" id="description" name="description">
                 <br>
                 <br>
                 <input type="submit" value="Submit" id="submit">
@@ -62,7 +62,7 @@
 
         <div class="practice_log">
             <table id="table"></table>
-            <script th:inline="javascript">showTable([[${data}]], [[${id}]]);</script>       
+            <script th:inline="javascript">showTable([[${data}]], [[${options}]]);</script>       
         </div>
 
     </body>

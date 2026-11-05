@@ -20,10 +20,11 @@ async function addInstruments() {
 
 
 function showInstruments(options){
+    console.log(options);
     for (let i = 0; i < options.length; i++){
         const add = document.createElement("option");
-        add.value = options[i];
-        add.textContent = options[i];
+        add.value = options[i].instrumentName;
+        add.textContent = options[i].instrumentName;
         document.getElementById("instrument").appendChild(add);
     };
 }

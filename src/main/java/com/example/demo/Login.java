@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 
 import com.example.demo.repository.UserRepository;
 import com.example.demo.entity.User;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller 
@@ -27,11 +28,15 @@ public class Login{
 	}
 
     @PostMapping({"/", "/login"})
-    public String loggedIn(@RequestParam String email, @RequestParam String password, Model model) throws IOException{
+    public String loggedIn(@RequestParam String email, @RequestParam String password, Model model, HttpSession session) throws IOException{
+        User user = userRepository.findByEmail(email).orElse(null);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        boolean valid = userRepository.findByEmail(email).map(user -> encoder.matches(password, user.getPasswordHash())).orElse(false);
-        if (valid) { return "redirect:/home"; }
+        boolean valid = encoder.matches(password, user.getPasswordHash());
+        if (valid) { 
+            session.setAttribute("userId", user.getId());
+            return "redirect:/home"; 
+        }
 
 		return login(model);
     }
@@ -42,10 +47,12 @@ public class Login{
     }
 
     @PostMapping("/sign-up")
-    public String signedUp(@RequestParam String name, @RequestParam String email, @RequestParam String password, Model model) throws IOException{
+    public String signedUp(@RequestParam String name, @RequestParam String email, @RequestParam String password, Model model, HttpSession session) throws IOException{
         String hash = new BCryptPasswordEncoder().encode(password);
+        User user = new User(name, email, hash);
 
-        userRepository.save(new User(name, email, hash));
+        User savedUser = userRepository.save(user);
+        session.setAttribute("userId", savedUser.getId());
         return "redirect:/home";
     }
 }
