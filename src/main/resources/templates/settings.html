@@ -8,6 +8,8 @@
         <script th:src="@{/colors.js}"></script>
     </head>
     <body>
+        <script th:inline="javascript">setColor([[${account.getColor()}]])</script>
+
         <div class ="title">
             <h1>Settings</h1>
         </div>
@@ -19,7 +21,7 @@
 
         <label for="hue">Color scheme</label>
         <input id="hue" type="range" min="1" max="360" value="220">
-        <script th:inline="javascript">colorSlider();</script>
+        <script th:inline="javascript">colorSlider([[${account.getId()}]]);</script>
 
         <div class="practice_log">
             <table id="table"></table>

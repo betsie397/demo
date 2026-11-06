@@ -10,7 +10,6 @@ async function editEntry(row, instruments){
 
     document.getElementById("date").value = row["date"];
     document.getElementById("duration").value = row["duration"];
-
     document.getElementById("scales").checked = row["scales"] === true;
     document.getElementById("exercises").checked = row["exercises"] === true;
     document.getElementById("pieces").checked = row["pieces"] === true;

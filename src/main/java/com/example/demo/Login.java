@@ -50,7 +50,7 @@ public class Login{
 
     @PostMapping("/sign-up")
     public String signedUp(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam String confirmPassword, Model model, HttpSession session) throws IOException{
-        if (!userRepository.findByEmail(email).isPresent()){
+        if (userRepository.findByEmail(email).isPresent()){
             return "redirect:/login";
         }
         if (!password.equals(confirmPassword)){

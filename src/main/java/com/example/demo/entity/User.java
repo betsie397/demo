@@ -20,6 +20,9 @@ public class User {
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
+    @Column(name = "color", nullable = false)
+    private int color = 220;
+
     protected User() {}
 
     public User(String name, String email, String passwordHash) {
@@ -32,8 +35,16 @@ public class User {
         return passwordHash;
     }
 
-    public Integer getId(){
+    public int getId(){
         return id;
+    }
+
+    public int getColor(){
+        return color;
+    }
+
+    public void setColor(int color){
+        this.color = color;
     }
 
 }

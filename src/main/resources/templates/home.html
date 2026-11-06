@@ -8,9 +8,12 @@
         <script th:src="@{/instruments.js}"></script>
         <script th:src="@{/delete_entry.js}"></script>
         <script th:src="@{/edit_entry.js}"></script>
+        <script th:src="@{/colors.js}"></script>
     </head>
 
     <body>
+        <script th:inline="javascript">setColor([[${user.getColor()}]])</script>
+
         <div class="title">
             <h1>Music Tracker</h1>
         </div>

@@ -16,6 +16,8 @@ import com.example.demo.repository.LogRepository;
 import com.example.demo.entity.Log;
 import com.example.demo.repository.InstrumentRepository;
 import com.example.demo.entity.Instrument;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.entity.User;
 import com.example.demo.repository.UserInstrumentRepository;
 import com.example.demo.entity.UserInstrument;
 
@@ -23,6 +25,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -30,11 +33,13 @@ import java.time.LocalDate;
 public class HomePage {
 	private final LogRepository logRepository;
 	private final InstrumentRepository instrumentRepository;
+	private final UserRepository userRepository;
 	private final UserInstrumentRepository userInstrumentRepository;
 
-	public HomePage(LogRepository logRepository, InstrumentRepository instrumentRepository, UserInstrumentRepository userInstrumentRepository){
+	public HomePage(LogRepository logRepository, InstrumentRepository instrumentRepository, UserRepository userRepository, UserInstrumentRepository userInstrumentRepository){
 		this.logRepository = logRepository;
 		this.instrumentRepository = instrumentRepository;
+		this.userRepository = userRepository;
 		this.userInstrumentRepository = userInstrumentRepository;
 	}
 
@@ -49,6 +54,9 @@ public class HomePage {
 
 		List<Log> rows = logRepository.findByUserId(userId);
 		model.addAttribute("data", rows);
+
+		User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found: " + userId));
+		model.addAttribute("user", user);
 
 		List<Instrument> instruments = instrumentRepository.findAll();
 		model.addAttribute("instruments", instruments);
