@@ -23,7 +23,9 @@ public class Login{
     }
 
 	@GetMapping({"/", "/login"})
-	public String login(Model model) throws IOException{
+	public String login(Model model, HttpSession session) throws IOException{
+        session.removeAttribute("userId");
+
 		return "login";
 	}
 
@@ -38,7 +40,7 @@ public class Login{
             return "redirect:/home"; 
         }
 
-		return login(model);
+		return login(model, session);
     }
 
     @GetMapping("/sign-up")

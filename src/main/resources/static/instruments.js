@@ -23,8 +23,8 @@ function showInstruments(key, options){
     for (let i = 0; i < options.length; i++){
         const add = document.createElement("option");
         add.value = options[i].instrumentId;
-        var name = key.find(item => Number(item.instrumentId) == Number(options.instrumentId));
-        add.textContent = name;
+        var name = key.find(item => Number(item.instrumentId) == Number(options[i].instrumentId));
+        add.textContent = name.instrumentName;
         document.getElementById("instrument").appendChild(add);
     };
 }

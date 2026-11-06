@@ -20,6 +20,7 @@ import com.example.demo.repository.UserInstrumentRepository;
 import com.example.demo.entity.UserInstrument;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.io.IOException;
@@ -38,7 +39,8 @@ public class HomePage {
 	}
 
 	@GetMapping("/home")
-	public String home(Model model, HttpSession session) throws IOException{
+	public String home(Model model, HttpSession session, HttpServletResponse response) throws IOException{
+		response.setHeader("Cache-Control", "no-store");
 		Integer userId = (Integer) session.getAttribute("userId");
 		if (userId == null) { return "redirect:/login"; }
 
@@ -71,7 +73,7 @@ public class HomePage {
 		log.setUserId(userId);
 		logRepository.save(log);
 
-		return home(model, session);
+		return "redirect:/home";
 	}
 
 	@DeleteMapping("/delete/{id}")
